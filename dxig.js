@@ -1,3 +1,6 @@
+const username = ""; // String username
+const userId = null; // Number userId
+
 async function fetchFollowers(count = 21, max_id = null, userId = null) {
   const url = new URL(`https://www.instagram.com/api/v1/friendships/${userId}/followers/`);
   url.searchParams.set('count', count);
@@ -28,7 +31,7 @@ async function fetchFollowers(count = 21, max_id = null, userId = null) {
     "x-ig-www-claim": "hmac.AR1S2-DeLp5tMU4tCWtgBYinivZsaGMw4_YstQDBz05ZoruW",
     "x-requested-with": "XMLHttpRequest"
   },
-  "referrer": "https://www.instagram.com/cupidslams/followers/",
+  "referrer": `https://www.instagram.com/${username}/followers/`,
   "referrerPolicy": "strict-origin-when-cross-origin",
   "body": null,
   "method": "GET",
@@ -40,7 +43,7 @@ async function fetchFollowers(count = 21, max_id = null, userId = null) {
   return data;
 }
 
-async function fetchFollowing(count = 21, max_id = null, userId = null) {
+async function fetchFollowing(count = 21, max_id = null) {
 const url = new URL(`https://www.instagram.com/api/v1/friendships/${userId}/followers/`);
   url.searchParams.set('count', count);
   if (max_id) {
@@ -70,7 +73,7 @@ fetch(url.toString(), {
     "x-ig-www-claim": "hmac.AR1S2-DeLp5tMU4tCWtgBYinivZsaGMw4_YstQDBz05ZolAN",
     "x-requested-with": "XMLHttpRequest"
   },
-  "referrer": "https://www.instagram.com/cupidslams/following/",
+  "referrer": `https://www.instagram.com/${username}/following/`,
   "referrerPolicy": "strict-origin-when-cross-origin",
   "body": null,
   "method": "GET",
@@ -87,7 +90,7 @@ async function fetchAllFollowers() {
   let maxId = null;
 
   do {
-    const data = await fetchFollowers(21, maxId, null);
+    const data = await fetchFollowers(21, maxId);
     followers = followers.concat(data.users);
     maxId = data.next_max_id;
   } while (maxId);
@@ -100,7 +103,7 @@ async function fetchAllFollowing() {
   let maxId = null;
 
   do {
-    const data = await fetchFollowing(21, maxId, null);
+    const data = await fetchFollowing(21, maxId);
     following = following.concat(data.users);
     maxId = data.next_max_id;
   } while (maxId);
